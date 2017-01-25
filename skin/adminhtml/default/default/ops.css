@@ -1,0 +1,46 @@
+.scoring {
+    padding:    2px;
+    margin-right: 4px;
+}
+th.scoring-G {
+    background: #00ff00;
+}
+th.scoring-O {
+    background: #ffaa00;
+}
+th.scoring-R {
+    background: #ff0000;
+    color:      white;
+}
+table.scoring-G {
+    border: 1px solid #00ff00;
+}
+table.scoring-O {
+    border: 1px solid #ffaa00;
+}
+table.scoring .ops_scoring_description div {
+    background: white url(/skin/adminhtml/default/default/images/note_msg_icon.gif) no-repeat scroll 1px 1px;
+    border: 1px solid gray;
+    display: none;
+    margin: -23px -2px;
+    padding: 0 4px 0 22px;
+    position: absolute;
+}
+table.scoring .ops_scoring_description:hover div {
+    display: block;
+}
+
+.ops_close_transaction_warning {
+    width: 35%;
+    margin-left:auto;
+    margin-right:0;
+    padding: 5px;
+    padding-left: 25px;
+    padding-left: 35px;
+    text-align: left;
+}
+
+select.kwixo_shipping_select {
+    width: 250px;
+    margin-right: 10px;
+}

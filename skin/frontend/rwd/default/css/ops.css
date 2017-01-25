@@ -1,0 +1,316 @@
+.ops-payment-paypage #ie_cc {
+    margin-top: 20px;
+}
+
+.ops-payment-paypage #ie_cc td {
+    text-align: center;
+}
+
+td .ncol {
+    position: absolute;
+}
+
+.ops-payment-paypage td .ncol {
+    position: inherit;
+    left: inherit;
+    width: auto;
+}
+
+.ops-form-list label {
+    float: none;
+}
+
+.ncoltable2 td {
+    text-align: center;
+}
+
+.ncoltable2 td.ncolinput {
+    text-align: left;
+}
+
+.ncoltable2 td.ncoltxtl2, .ncoltable1 td.ncoltxtl {
+    text-align: right;
+    padding-right: 5px;
+}
+
+.ops-payment-paypage input.ncol {
+    background: none repeat scroll 0 0 #F18200;
+    border-color: #ED6502 #A04300 #A04300 #ED6502;
+    border-style: solid;
+    border-width: 1px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font: bold 12px arial, helvetica, sans-serif;
+    padding: 0 7px 1px;
+    text-align: center !important;
+    white-space: nowrap;
+}
+
+#payment_form_ops_alias li {
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    padding: 12px 10px 0;
+}
+
+#payment_form_ops_alias label {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding-left: 8px;
+    text-align: left;
+    vertical-align: top;
+    width: 400px;
+}
+
+.readonly {
+    color: #c6cbc7;
+}
+
+#ops_review_form input {
+    width: 255px;
+}
+
+#ops_placeform_iframe {
+    width: 100%;
+    min-height: 650px;
+    border: none;
+}
+
+.ops_htp_iframe {
+    height: 475px;
+    width: 100%;
+    border: none;
+    margin-top: 10px;
+}
+
+.ops_htp_loader {
+    text-align: center;
+}
+
+.ops-subscription-notice {
+    background-color: lightyellow;
+    padding: 10px 10px;
+    border: yellow 2px solid;
+    margin: 10px auto;
+}
+
+ul.ops-form-list.ops_card input[type=radio] {
+    display: none;
+}
+
+ul.ops-form-list.ops_card input[type=radio] + label {
+    display: block;
+    cursor: pointer;
+    padding: 5px 5px 27px 5px;
+    vertical-align: top;
+    width: auto;
+    border: 1px solid #636363;
+    margin: 5px;
+}
+
+ul.ops-form-list.ops_card input[type=radio] + label.new_alias_label {
+    display: block;
+    width: auto;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+ul.ops-form-list.ops_card input[type=radio]:checked + label.new_alias_label {
+    border-bottom: none;
+}
+
+ul.ops-form-list.ops_card input[type=radio]:checked + label,
+ul.ops-form-list.ops_card input[type=radio]:checked + label.new_alias_label + li.insert_payment_details {
+    background-color: #f4f4f4;
+    padding: 4px 4px 0px 4px;
+}
+
+li.insert_payment_details {
+    display: none;
+}
+
+ul.ops-form-list.ops_card input[type=radio]:checked + label.new_alias_label + li.insert_payment_details {
+    border: 1px solid #636363;
+    border-top: none;
+    padding: 4px 4px 4px 4px;
+    margin: 0 5px 5px 5px;
+    display: block;
+}
+
+ul.ops-form-list.ops_card input[type=radio] + label li.cvc {
+    height: 20px;
+}
+
+ul.ops-form-list.ops_card input[type=radio]:checked + label li.cvc input {
+    height: 18px;
+    display: inline-block;
+    width: 140px !important;
+    vertical-align: middle;
+    line-height: 18px;
+    padding: 0px;
+    margin-left: 10px;
+}
+
+ul.ops-form-list.ops_card input[type=radio]:checked + label li.cvc input + div.validation-advice {
+    float: right !important;
+}
+
+#opc-payment.section .ops-form-list li img {
+    height: 20px;
+    float: none;
+    display: inline;
+    vertical-align: middle;
+}
+
+img.ops-brandlogo {
+    height: 1em;
+    display: inline-block;
+}
+
+/* OPS styles for payment methods */
+#co-payment-form .payment-logo {
+    height: 31px;
+    display: inline-block;
+    box-sizing: border-box;
+    margin-top: -3px;
+    padding: 0 5px 5px;
+}
+
+#co-payment-form .payment-logo.left {
+    float: left;
+}
+
+#co-payment-form .payment-logo.right {
+    float: right;
+}
+
+#co-payment-form .payment-logo img {
+    height: 100%;
+}
+
+/* OPS Styles for payment retry page */
+.ops-payment-retry #co-payment-form {
+    display: inline-block;
+    width: 65%;
+    vertical-align: top;
+    float: left;
+}
+
+.ops-payment-retry .payment-information {
+    display: inline-block;
+    width: 33%;
+    vertical-align: top;
+    float: right;
+    border-left: 1px solid #aaa;
+    padding-left: 25px;
+}
+
+.ops-payment-retry .payment-information .block-title {
+    border: none;
+    padding: 0;
+}
+
+.ops-payment-retry #co-payment-form .section .step-title {
+    border: none;
+}
+
+.ops-payment-retry #co-payment-form .step-title h2 {
+    margin: 0 0 0 20px;
+}
+
+.ops-payment-retry .payment-information .billing-address,
+.ops-payment-retry .payment-information .shipping-address {
+    padding-top: 10px;
+}
+
+.ops-payment-retry .payment-information .billing-address span,
+.ops-payment-retry .payment-information .shipping-address span {
+    display: block;
+}
+
+.ops-payment-retry .payment-information .billing-address span.zipcode,
+.ops-payment-retry .payment-information .shipping-address span.zipcode,
+.ops-payment-retry .payment-information .billing-address span.city,
+.ops-payment-retry .payment-information .shipping-address span.city {
+    display: inline-block;
+}
+
+table#ops-payment-information-table,
+#ops-payment-information-table thead,
+#ops-payment-information-table tbody,
+#ops-payment-information-table th,
+#ops-payment-information-table td,
+#ops-payment-information-table tr {
+    display: block;
+}
+
+#ops-payment-information-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+#ops-payment-information-table tr {
+    border: 1px solid #ccc;
+}
+
+#ops-payment-information-table td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+#ops-payment-information-table td:before {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    content: attr(data-ops-title);
+    overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+    .ops-payment-retry #co-payment-form {
+        display: inline-block;
+        width: 100%;
+        vertical-align: top;
+        float: none;
+    }
+
+    .ops-payment-retry .payment-information {
+        width: 100%;
+        float: none;
+        border-left: none;
+        padding-left: 0;
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 10px;
+    }
+
+    .ops-payment-retry #co-payment-form .step-title h2 {
+        margin: 0;
+    }
+
+    .ops-payment-retry .payment-information .billing-address {
+        margin-right: 30px;
+    }
+
+    .ops-payment-retry .payment-information .billing-address,
+    .ops-payment-retry .payment-information .shipping-address {
+        display: inline-block;
+        vertical-align: top;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .ops-payment-retry #payment-buttons-container button {
+        margin-bottom: 10px;
+    }
+
+    .ops-payment-retry #payment-buttons-container button + button {
+        clear: left;
+    }
+}

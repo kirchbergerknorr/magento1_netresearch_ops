@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+-->
+<layout version="0.1.0">
+    <checkout_onepage_index>
+        <reference name="head">
+            <action method="addJs">
+                <script>netresearch/ops/payment.js</script>
+            </action>
+            <action method="addJs">
+                <script>netresearch/ops/tokenization.js</script>
+            </action>
+            <action method="addCss">
+                <stylesheet>css/ops.css</stylesheet>
+            </action>
+
+            <block type="ops/checkout_deviceFingerprinting"
+                   name="ops_deviceFingerprinting" as="ops.devicefingerprinting" />
+        </reference>
+    </checkout_onepage_index>
+    <onestepcheckout_index_index>
+        <reference name="head">
+            <action method="addJs">
+                <script>netresearch/ops/osc_payment.js</script>
+            </action>
+            <action method="addJs">
+                <script>netresearch/ops/payment.js</script>
+            </action>
+            <action method="addJs">
+                <script>netresearch/ops/tokenization.js</script>
+            </action>
+            <action method="addCss">
+                <stylesheet>css/ops.css</stylesheet>
+            </action>
+
+            <block type="ops/checkout_deviceFingerprinting"
+                   name="ops_deviceFingerprinting" as="ops.devicefingerprinting" />
+        </reference>
+    </onestepcheckout_index_index>
+    <checkout_onepage_paymentmethod>
+        <reference name="checkout.onepage.payment">
+            <block type="ops/frauddetection" name="ops_frauddetection" template="ops/frauddetection.phtml"
+                   output="toHtml"/>
+        </reference>
+    </checkout_onepage_paymentmethod>
+    <ops_payment_paypage>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/ops.css</stylesheet>
+            </action>
+        </reference>
+        <remove name="right"/>
+        <remove name="left"/>
+        <remove name="catalog.topnav"/>
+        <reference name="header">
+            <remove name="top.links"/>
+            <remove name="top.search"/>
+            <remove name="store_language"/>
+            <remove name="top.container"/>
+        </reference>
+        <reference name="footer">
+            <remove name="cms_footer_links"/>
+            <remove name="footer_links"/>
+            <remove name="store_switcher"/>
+        </reference>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="ops/paypage" name="ops_paypage" template="ops/paypage.phtml"/>
+        </reference>
+    </ops_payment_paypage>
+
+    <ops_payment_placeform>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/ops.css</stylesheet>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="ops/placeform" name="ops_placeform" template="ops/placeform.phtml"/>
+        </reference>
+    </ops_payment_placeform>
+
+    <ops_payment_retry>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/opcheckout.js</name>
+            </action>
+            <action method="addCss">
+                <stylesheet>css/ops.css</stylesheet>
+            </action>
+            <action method="addJs">
+                <script>netresearch/ops/tokenization.js</script>
+            </action>
+            <action method="addJs">
+                <script>netresearch/ops/payment.js</script>
+            </action>
+            <action method="addJs">
+                <script>varien/accordion.js</script>
+            </action>
+        </reference>
+        <remove name="right"/>
+        <remove name="left"/>
+        <reference name="content">
+            <block type="ops/retryPayment" name="ops_retryPayment" template="ops/retryPayment.phtml">
+                <block type="ops/retryPayment_methods" name="ops_retryPayment_methods" template="checkout/onepage/payment/methods.phtml">
+                    <block type="core/template" name="checkout.onepage.payment.methods.scripts" as="scripts" />
+                    <block type="core/template" name="checkout.onepage.payment.methods.additional" as="additional" />
+                </block>
+            </block>
+        </reference>
+    </ops_payment_retry>
+
+    <ops_payment_placeform3dsecure>
+        <remove name="right"/>
+        <remove name="left"/>
+        <reference name="content">
+            <block type="ops/placeform3dsecure" name="ops_placeform3dsecure" template="ops/placeform3dsecure.phtml"/>
+        </reference>
+    </ops_payment_placeform3dsecure>
+
+    <customer_account>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/ops.css</stylesheet>
+            </action>
+        </reference>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="ops" ifconfig="payment/ops_cc/active_alias">
+                <name>ops_payment_information</name>
+                <path>ops/customer/aliases</path>
+                <label>My payment information</label>
+            </action>
+        </reference>
+    </customer_account>
+
+    <ops_customer_aliases translate="label">
+        <label>My payment information</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="ops/alias_list" name="ops_customer_aliases" template="ops/customer/alias/list.phtml"/>
+        </reference>
+        <reference name="root">
+            <action method="setHeaderTitle" translate="title" module="ops">
+                <title>My payment information</title>
+            </action>
+        </reference>
+    </ops_customer_aliases>
+    <checkout_onepage_review>
+        <reference name="checkout.onepage.review.info.items.before">
+            <block type="ops/checkout_subscriptionNotice" name="ops.checkout.subscriptionNotice"
+                   as="subscriptionNotice"
+                   template="ops/checkout/subscriptionNotice.phtml"/>
+        </reference>
+    </checkout_onepage_review>
+</layout>

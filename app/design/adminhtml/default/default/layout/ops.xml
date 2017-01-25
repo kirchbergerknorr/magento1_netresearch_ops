@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+ -->
+<layout version="0.1.0">
+    <add_order_grid_column_handle>
+        <reference name="sales_order.grid">
+            <action method="addColumnAfter" ifconfig="payment_services/ops/showQuoteIdInOrderGrid">
+                <columnId>quote_id</columnId>
+                <arguments module="ops" translate="header">
+                    <header>Quote #</header>
+                    <index>quote_id</index>
+                    <type>text</type>
+                    <width>80px</width>
+                </arguments>
+                <after>real_order_id</after>
+            </action>
+        </reference>
+    </add_order_grid_column_handle>
+    <!-- order grid action -->
+    <adminhtml_sales_order_grid>
+        <!-- apply the layout handle defined above -->
+        <update handle="add_order_grid_column_handle" />
+    </adminhtml_sales_order_grid>
+    <!-- order grid view action -->
+    <adminhtml_sales_order_index>
+        <!-- apply the layout handle defined above -->
+        <update handle="add_order_grid_column_handle" />
+    </adminhtml_sales_order_index>
+    <default>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>ops.css</name></action>
+        </reference>
+    </default>
+    <adminhtml_sales_order_create_index>
+        <reference name="head">
+            <action method="addJs"><script>netresearch/ops/payment.js</script></action>
+            <action method="addJs"><script>netresearch/ops/tokenization.js</script></action>
+        </reference>
+    </adminhtml_sales_order_create_index>
+
+    <adminhtml_customer_edit>
+        <reference name="customer_edit_tabs">
+            <block type="ops/adminhtml_customer_edit_tab_alias" name="customer_edit_tab_ops_alias" after="orders" />
+            <action method="addTab"><name>customer_edit_tab_ops_alias</name><block>customer_edit_tab_ops_alias</block></action>
+        </reference>
+    </adminhtml_customer_edit>
+    <adminhtml_kwixocategory_index>
+        <reference name="head">
+            <action method="addJs"><js>extjs/ext-tree.js</js></action>
+            <action method="addJs"><js>extjs/ext-tree-checkbox.js</js></action>
+            <action method="addItem"><type>js</type><name>extjs/ext-tree.js</name></action>
+            <action method="addItem"><type>js</type><name>extjs/ext-tree-checkbox.js</name></action>
+            <action method="addItem"><type>js_css</type><name>extjs/resources/css/ext-all.css</name></action>
+            <action method="addItem"><type>js_css</type><name>extjs/resources/css/ytheme-magento.css</name></action>
+        </reference>
+        <reference name="left">
+            <reference name="left">
+                <block type="ops/adminhtml_kwixocategory_categoryTree" name="tree" />
+            </reference>
+        </reference>
+        <reference name="content">
+            <block type="ops/adminhtml_kwixocategory_edit" name="catproduct" template="ops/form/kwixo/category.phtml"/>
+        </reference>
+    </adminhtml_kwixocategory_index>
+    <adminhtml_kwixoshipping_index>
+        <reference name="content">
+            <block type="ops/adminhtml_kwixo_shipping_edit" name="kwixoshipping" template="ops/form/kwixo/shipping.phtml"/>
+        </reference>
+    </adminhtml_kwixoshipping_index>
+</layout>

@@ -1,0 +1,8 @@
+{
+  "name": "kirchbergerknorr/magento1_netresearch_ops",
+  "type": "magento-module",
+  "description": "Official Ingenico ePayments extension",
+  "authors": [
+    {"name": "Ingenico"}
+  ]
+}

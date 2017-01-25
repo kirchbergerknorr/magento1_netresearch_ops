@@ -1,0 +1,92 @@
+tables:
+  ops/alias:
+    - id: 1
+      customer_id: 1
+      alias: 4711
+      brand: 'VISA'
+      billing_address_hash: '0815'
+      shipping_address_hash: '2342'
+      pseudo_account_or_cc_no: 'xxxx1111' 
+      expiration_date: '0116'
+      payment_method: 'ops_cd'
+      state: 'active'
+      store_id: 0
+      created_at: '2000-01-01 00:00:01'
+
+    - id: 2
+      customer_id: 1
+      alias: 4712
+      brand: 'VISA'
+      billing_address_hash: '0816'
+      shipping_address_hash: '2342'
+      pseudo_account_or_cc_no: 'xxxx1112'
+      expiration_date: '0116'
+      payment_method: 'ops_cc'
+      state: 'active'
+      store_id: 0
+      created_at: '1970-01-01 00:00:01'
+
+    - id: 3
+      customer_id: 1
+      alias: 4713
+      brand: 'VISA'
+      billing_address_hash: '0817'
+      shipping_address_hash: '0817'
+      pseudo_account_or_cc_no: 'xxxx1113'
+      expiration_date: '0116'
+      payment_method: 'ops_cc'
+      state: 'pending'
+      store_id: 0
+      created_at: '1970-01-01 00:00:02'
+
+    - id: 4
+      customer_id: 2
+      alias: 4711
+      brand: 'VISA'
+      billing_address_hash: '1508'
+      shipping_address_hash: '4223'
+      pseudo_account_or_cc_no: 'xxxx1111'
+      expiration_date: '0117'
+      payment_method: 'ops_cc'
+      state: 'active'
+      store_id: 0
+      created_at: '1970-01-01 00:00:02'
+
+    - id: 5
+      customer_id: 1
+      alias: 4711
+      brand: 'VISA'
+      billing_address_hash: '1b9ecdf409e240717f04b7155712658ab09116bb'
+      shipping_address_hash: '1b9ecdf409e240717f04b7155712658ab09116bb'
+      pseudo_account_or_cc_no: 'xxxx1111'
+      expiration_date: '0117'
+      payment_method: 'ops_cc'
+      state: 'active'
+      store_id: 0
+      created_at: '1970-01-01 00:00:02'
+
+    - id: 6
+      customer_id: 1
+      alias: 4714
+      brand: 'VISA'
+      billing_address_hash: '1b9ecdf409e240717f04b7155712658ab09116bb'
+      shipping_address_hash: '1b9ecdf409e240717f04b7155712658ab09116bb'
+      pseudo_account_or_cc_no: 'xxxx1111' 
+      expiration_date: '0116'
+      payment_method: 'ops_cd'
+      state: 'pending'
+      store_id: 0
+      created_at: '2000-11-01 00:00:01'
+
+    - id: 7
+      customer_id: 23
+      alias: 4714
+      brand: 'VISA'
+      billing_address_hash: '1b9ecdf409e240717f04b7155712658ab09116bb'
+      shipping_address_hash: '1b9ecdf409e240717f04b7155712658ab09116bb'
+      pseudo_account_or_cc_no: 'xxxx1111' 
+      expiration_date: '0116'
+      payment_method: 'ops_cd'
+      state: 'active'
+      store_id: 0
+      created_at: '2000-11-01 00:00:01'

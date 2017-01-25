@@ -1,0 +1,26 @@
+tables:
+  core/config_data:
+    - config_id:           500
+      path:                'payment/ops_iDeal/active'
+      value:               1
+
+  sales/order:
+    - entity_id:           13
+      increment_id:        100000013
+      shipping_address_id: 43
+      base_grand_total:    177.55
+      grand_total:         177.55
+      currency:            'EUR'
+      customer_gender:     1
+      shipping_method:     'flatrate_flatrate'
+      customer_email:      'willi.usa.customer@trash-mail.com'
+      state:               'processing'
+      status:              'processing'
+      quote_id:            25
+      store_id:            0
+
+  sales/order_payment:
+    - entity_id:               3
+      parent_id:               13
+      additional_information:  a:3:{s:2:"PM";s:16:"Bank transfer DE";s:5:"BRAND";s:16:"Bank transfer DE";s:6:"status";s:1:"0";}
+      method:                  'ops_bankTransfer'

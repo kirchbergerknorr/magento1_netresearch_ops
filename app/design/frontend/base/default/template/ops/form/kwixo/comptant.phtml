@@ -1,0 +1,11 @@
+<?php $code = $this->getMethodCode() ?>
+<?php if ($code == 'ops_kwixoComptant'): ?>
+<ul class="form-list ops-form-list" id="payment_form_<?php echo $code ?>" style="display:none;">
+    <li>
+        <img src="<?php echo $this->getSkinUrl($this->getPmLogo()); ?>" />
+    </li>
+    <li>
+        <?php echo $this->__('kwixo_payement_en_1_fois_description');?>
+    </li>
+</ul>
+<?php endif; ?>

@@ -1,0 +1,279 @@
+ops_3XCB:
+    pm:    3XCB
+    brand: 3XCB
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  AIRPLUS
+ops_CreditCard:
+    pm:    CreditCard
+    brand: American Express
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  Aurore
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  CB
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  Cofinoga
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  Dankort
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  Diners
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  JCB
+ops_Creditcard:
+    pm:    Creditcard
+    brand:  Laser
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  MaestroUK
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  MasterCard
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  UATP
+ops_CreditCard:
+    pm:    CreditCard
+    brand:  VISA
+ops_BCMC:
+    pm:    CreditCard
+    brand:  BCMC
+ops_CreditCard:
+    pm:    CreditCard
+    brand: Maestro
+ops_PostFinance:
+    pm:    PostFinance Card
+    brand: PostFinance Card 
+ops_CreditCard:
+    pm:    CreditCard
+    brand: PRIVILEGE
+ops_UNEUROCOM:
+    pm:    UNEUROCOM
+    brand: UNEUROCOM
+ops_AmazonCheckout:
+    pm:    Amazon Checkout
+    brand: Amazon Checkout
+ops_Belfius:
+    pm:    Belfius Direct Net
+    brand: Belfius Direct Net
+ops_cashticket:
+    pm:    cashticket
+    brand: cashticket
+ops_cbcOnline:
+    pm:    CBC Online
+    brand: CBC Online
+ops_directEbanking:
+    pm:    DirectEbanking
+    brand: Sofort Uberweisung
+ops_directEbankingAT:
+    pm:    DirectEbankingAT
+    brand: DirectEbankingAT
+ops_directEbankingBE:
+    pm:    DirectEbankingBE
+    brand: DirectEbankingBE 
+ops_directEbankingCH:
+    pm:    DirectEbankingCH
+    brand: DirectEbankingCH 
+ops_directEbankingDE:
+    pm:    DirectEbankingDE
+    brand: DirectEbankingDE 
+ops_directEbankingFR:
+    pm:    DirectEbankingFR
+    brand: DirectEbankingFR 
+ops_directEbankingGB:
+    pm:    DirectEbankingGB
+    brand: DirectEbankingGB 
+ops_directEbankingIT:
+    pm:    DirectEbankingIT
+    brand: DirectEbankingIT 
+ops_directEbankingNL:
+    pm:    DirectEbankingNL
+    brand: DirectEbankingNL 
+ops_EBS_AXIS:
+    pm:    EBS_AXIS
+    brand: EBS_AXIS
+ops_EBS_BC:
+    pm:    EBS_BC
+    brand: EBS_BC
+ops_EBS_CB:
+    pm:    EBS_CB
+    brand: EBS_CB
+ops_EBS_CORP:
+    pm:    EBS_CORP
+    brand: EBS_CORP
+ops_EBS_DC:
+    pm:    EBS_DC
+    brand: EBS_DC
+ops_EBS_FED:
+    pm:    EBS_FED
+    brand: EBS_FED
+ops_EBS_HDFC:
+    pm:    EBS_HDFC
+    brand: EBS_HDFC
+ops_EBS_HYDERABAD:
+    pm:    EBS_HYDERABAD
+    brand: EBS_HYDERABAD
+ops_EBS_IB:
+    pm:    EBS_IB
+    brand: EBS_IB
+ops_EBS_ICASH:
+    pm:    EBS_ICASH
+    brand: EBS_ICASH
+ops_EBS_ICICI:
+    pm:    EBS_ICICI
+    brand: EBS_ICICI
+ops_EBS_INDIA:
+    pm:    EBS_INDIA
+    brand: EBS_INDIA
+ops_EBS_ITZ:
+    pm:    EBS_ITZ
+    brand: EBS_ITZ
+ops_EBS_JK:
+    pm:    EBS_JK
+    brand: EBS_JK
+ops_EBS_KARNATAKA:
+    pm:    EBS_KARNATAKA
+    brand: EBS_KARNATAKA
+ops_EBS_KOTAK:
+    pm:    EBS_KOTAK
+    brand: EBS_KOTAK
+ops_EBS_MYSORE:
+    pm:    EBS_MYSORE
+    brand: EBS_MYSORE
+ops_EBS_TRAVANCORE:
+    pm:    EBS_TRAVANCORE
+    brand: EBS_TRAVANCORE
+ops_eDankort:
+    pm:    eDankort
+    brand: eDankort
+ops_eps:
+    pm:    EPS
+    brand: EPS
+ops_FidorPay:
+    pm:    FidorPay
+    brand: FidorPay
+ops_fortisPayButton:
+    pm:    Fortis Pay Button
+    brand: Fortis Pay Button
+ops_giroPay:
+    pm:    giropay
+    brand: giropay
+ops_Masterpass:
+    pm:    Masterpass
+    brand: Masterpass
+ops_iDeal:
+    pm:    iDEAL
+    brand: iDEAL
+ops_ingHomePay:
+    pm:    ING HomePay
+    brand: ING HomePay
+ops_kbcOnline:
+    pm:    KBC Online
+    brand: KBC Online
+ops_paysafecard:
+    pm:    paysafecard
+    brand: paysafecard
+ops_postFinanceEFinance:
+    pm:    PostFinance e-finance
+    brand: PostFinance e-finance
+ops_directDebitsAt:
+    pm:    Direct Debits AT
+    brand: Direct Debits AT
+ops_directDebitsDe:
+    pm:    Direct Debits DE
+    brand: Direct Debits DE
+ops_directDebitsNl:
+    pm:    Direct Debits NL
+    brand: Direct Debits NL
+ops_bankTransfer:
+    pm:    "Bank transfer"
+    brand: "Bank transfer"
+ops_bankTransferBe:
+    pm:    Bank transfer BE
+    brand: Bank transfer BE
+ops_bankTransferDe:
+    pm:    Bank transfer DE
+    brand: Bank transfer DE
+ops_bankTransferFr:
+    pm:    Bank transfer FR
+    brand: Bank transfer FR
+ops_bankTransferNl:
+    pm:    Bank transfer NL
+    brand: Bank transfer NL
+ops_installmentsDe:
+    pm:    Installments DE
+    brand: Installments DE
+ops_installmentsDk:
+    pm:    Installments DK
+    brand: Installments DK
+ops_installmentsFi:
+    pm:    Installments FI
+    brand: Installments FI
+ops_installmentsNl:
+    pm:    Installments NL
+    brand: Installments NL
+ops_installmentsNo:
+    pm:    Installments NO
+    brand: Installments NO
+ops_installmentsSe:
+    pm:    Installments SE
+    brand: Installments SE
+ops_openInvoiceDe:
+    pm:    Open Invoice DE
+    brand: Open Invoice DE
+ops_openInvoiceDk:
+    pm:    Open Invoice DK
+    brand: Open Invoice DK
+ops_openInvoiceFi:
+    pm:    Open Invoice FI
+    brand: Open Invoice FI
+ops_openInvoiceNl:
+    pm:    Open Invoice NL
+    brand: Open Invoice NL
+ops_openInvoiceAT:
+    pm:    Open Invoice AT
+    brand: Open Invoice AT
+ops_openInvoiceNo:
+    pm:    Open Invoice NO
+    brand: Open Invoice NO
+ops_openInvoiceSe:
+    pm:    Open Invoice SE
+    brand: Open Invoice SE
+ops_cod:
+    pm:    Payment on Delivery
+    brand: Payment on Delivery
+ops_interSolve:
+    pm:    InterSolve
+    brand: InterSolve
+ops_pingPing:
+    pm:    PingPing
+    brand: PingPing
+ops_tunz:
+    pm:    TUNZ
+    brand: TUNZ
+ops_cashEX:
+    pm:    cashEX
+    brand: cashEX
+ops_cashU:
+    pm:    cashU
+    brand: cashU
+ops_cashUDirect:
+    pm:    cashU Direct
+    brand: cashU Direct
+ops_Payble:
+    pm:    Payble
+    brand: Payble
+ops_paypal:
+    pm:    PAYPAL
+    brand: PAYPAL
+ops_wallie:
+    pm:    Wallie
+    brand: Wallie
+ops_belfiusDirectNet:
+    pm:    Belfius Direct Net
+    brand: Belfius Direct Net

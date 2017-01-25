@@ -1,0 +1,21 @@
+<div id="category-edit-container" class="category-content">
+    <?php echo $this->getFormInitScripts() ?>
+    <div class="content-header">
+        <?php echo $this->getHeaderHtml() ?>
+        <p class="content-buttons form-buttons"><?php echo $this->getButtonsHtml('header') ?></p>
+    </div>
+
+    <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="edit_form">
+        <?php echo $this->getChildHtml('form') ?>
+    </form>
+
+    <?php if ($this->hasFooterButtons()): ?>
+        <div class="content-footer">
+            <p class="content-buttons form-buttons"><?php echo $this->getButtonsHtml('footer') ?></p>
+        </div>
+    <?php endif; ?>
+    <script type="text/javascript">
+        var editForm = new varienForm('edit_form', '<?php echo $this->getValidationUrl() ?>');
+    </script>
+    <?php echo $this->getFormScripts() ?>
+</div>

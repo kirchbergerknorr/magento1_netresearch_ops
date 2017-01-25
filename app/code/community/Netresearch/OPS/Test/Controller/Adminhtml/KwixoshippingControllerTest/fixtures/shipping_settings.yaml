@@ -1,0 +1,7 @@
+tables:
+  ops/kwixo_shipping_setting:
+    - id: 1
+      shipping_code: flatrate
+      kwixo_shipping_type: ''
+      kwixo_shipping_speed: ''
+      kwixo_shipping_details: ''

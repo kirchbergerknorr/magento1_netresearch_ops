@@ -1,0 +1,98 @@
+<?php
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+ * flex.phtml
+ *
+ * @category Payment
+ * @package  Netresearch_OPS
+ * @author   Paul Siedler <paul.siedler@netresearch.de>
+ */
+
+/** @var Netresearch_OPS_Block_Form_Flex $this */
+
+$_code = $this->getMethodCode();
+$methods = $this->getFlexMethods();
+
+?>
+<script type="application/javascript">
+    Validation.add('ops-flex-validation',
+        '<?php echo $this->escapeHtml($this->__('Please select one of the options.')); ?>',
+        function (v, elm) {
+            if (payment.currentMethod == '<?php echo $_code ?>') {
+                return Validation.get('validate-one-required-by-name')._test(v,elm);
+            } else {
+                return true;
+            }
+        });
+
+</script>
+<ul class="form-list ops-form-list" id="payment_form_ops_flex">
+    <?php if ($this->isDefaultOptionActive()): ?>
+        <li><input type="radio" value="<?php echo $this->escapeHtml($this->getDefaultOptionTitle()); ?>"
+                   data-brand=""
+                   class="ops-flex-validation"
+                   data-pm=""
+                   name="payment[ops_flex_data][<?php echo Netresearch_OPS_Model_Payment_Flex::INFO_KEY_TITLE ?>]"
+                   id="flex_default">
+            <label for="flex_default"><?php echo $this->escapeHtml($this->getDefaultOptionTitle()); ?></label>
+        </li>
+    <?php endif; ?>
+    <?php foreach ($methods as $method): ?>
+        <li><input type="radio" value="<?php echo $this->escapeHtml($method['title']); ?>"
+                   name="payment[ops_flex_data][<?php echo Netresearch_OPS_Model_Payment_Flex::INFO_KEY_TITLE ?>]"
+                   data-brand="<?php echo $this->escapeHtml($method['brand']); ?>"
+                   data-pm="<?php echo $this->escapeHtml($method['pm']); ?>"
+                   class="ops-flex-validation"
+                   id="flex_<?php echo $this->escapeHtml($method['pm'] . '_' . $method['brand']) ?>"/>
+            <label for="flex_<?php echo $this->escapeHtml($method['pm'] . '_' . $method['brand']) ?>">
+                <?php echo $this->escapeHtml($method['title']); ?>
+            </label>
+        </li>
+    <?php endforeach; ?>
+    <input type="text" class="hidden" id="ops_flex_pm"
+           name="payment[ops_flex_data][<?php echo Netresearch_OPS_Model_Payment_Flex::INFO_KEY_PM ?>]"/>
+    <input type="text" class="hidden" id="ops_flex_brand"
+           name="payment[ops_flex_data][<?php echo Netresearch_OPS_Model_Payment_Flex::INFO_KEY_BRAND ?>]"/>
+
+    <script type="application/javascript">
+
+        var paymentFormOpsFlex = $('payment_form_ops_flex');
+        paymentFormOpsFlex.on('change', 'input[type="radio"]', function (event) {
+            if (payment.currentMethod != 'ops_flex') {
+                $('p_method_ops_flex').checked = true;
+                payment.switchMethod('ops_flex');
+            }
+            $('ops_flex_pm').value = event.target.dataset.pm;
+            $('ops_flex_brand').value = event.target.dataset.brand;
+        });
+        Event.observe(paymentFormOpsFlex, 'payment-method:switched-off', function (event) {
+            if (event.memo.method_code == 'ops_flex') {
+                payment.changeVisible(event.memo.method_code, false);
+                if (typeof this.down('input:checked') != 'undefined') {
+                    this.down('input:checked').checked = false;
+                }
+
+            }
+        });
+    </script>
+</ul>
+<p><?php echo $this->getRedirectMessage(); ?></p>

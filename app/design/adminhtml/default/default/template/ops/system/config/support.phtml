@@ -1,0 +1,100 @@
+<?php
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+?>
+<table cellspacing="0" class="switcher" width="100%" class="form-list">
+    <col width="300px"/>
+    <col/>
+    <thead>
+    <tr>
+        <th colspan="2">
+            <?php echo $this->escapeHtml($this->getFieldsetLabel()) ?>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><?php echo $this->__('Extension Version'); ?></td>
+        <td><?php echo $this->getExtensionVersion(); ?></td>
+    </tr>
+    <?php if ($this->hasDocumentation()): ?>
+        <tr>
+            <td><?php echo $this->__('Documentation'); ?></td>
+            <td>
+                <ul>
+                    <?php if ($this->getDocLinkEn()): ?>
+                        <li><a href="<?php echo $this->getDocLinkEn() ?>" target="_blank"><?php echo $this->__('English'); ?></a></li>
+                    <?php endif; ?>
+                    <?php if ($this->getDocLinkDe()): ?>
+                        <li><a href="<?php echo $this->getDocLinkDe() ?>" target="_blank"><?php echo $this->__('German'); ?></a></li>
+                    <?php endif; ?>
+                </ul>
+            </td>
+        </tr>
+    <?php endif; ?>
+    <?php if ($this->hasFaq()): ?>
+        <tr>
+            <td><?php echo $this->__('First Aid - FAQ'); ?></td>
+            <td>
+                <ul>
+                    <?php if ($this->getFaqLinkEn()): ?>
+                        <li><a href="<?php echo $this->getFaqLinkEn() ?>" target="_blank"><?php echo $this->__('English'); ?></a></li>
+                    <?php endif; ?>
+                    <?php if ($this->getFaqLinkDe()): ?>
+                        <li><a href="<?php echo $this->getFaqLinkDe() ?>" target="_blank"><?php echo $this->__('German'); ?></a></li>
+                    <?php endif; ?>
+                </ul>
+            </td>
+        </tr>
+    <?php endif; ?>
+
+    <?php if (0 < strlen($this->getSupportMail())): ?>
+        <tr>
+            <td class=label><?php echo $this->__('Need support? Contact Ingenico ePayments:'); ?></td>
+            <?php
+            $bodyInfo = array(
+                '',
+                '===',
+                'Magento version: ' . $this->getMageVersion(),
+                'Ingenico ePayments app version: ' . $this->getExtensionVersion(),
+                'Shop URI: ' . Mage::getBaseUrl()
+            );
+            ?>
+            <td>
+                <a href="mailto:<?php echo $this->getSupportMail(); ?>?body=<?php echo rawurlencode(implode("\n", $bodyInfo)) ?>"><?php echo $this->getSupportMail() ?></a>
+            </td>
+        </tr>
+    <?php endif; ?>
+    <?php if ($this->hasDevPrefix()): ?>
+        <tr style="color:red">
+            <td class=label><?php echo $this->__('devprefix'); ?></td>
+            <td><?php echo $this->getDevPrefix(); ?></td>
+        </tr>
+    <?php endif; ?>
+    <tr>
+        <td>
+            <a style="display: none" href="<?php echo $this->getLogDownloadLink(); ?>">
+                <?php echo $this->__('Download Logfile'); ?>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+

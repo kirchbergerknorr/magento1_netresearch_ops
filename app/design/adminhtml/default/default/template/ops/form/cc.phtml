@@ -1,0 +1,177 @@
+<?php
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2015 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+ * @category Payment provider
+ * @package  Netresearch_OPS
+ * @author   Paul Siedler <paul.siedler@netresearch.de>
+ */
+
+/** @var $this Netresearch_OPS_Block_Form_Cc */
+?>
+<style>
+    .ops_tokenization_frame {
+        height: 475px;
+        width: 100%;
+        border: none;
+    }
+</style>
+
+<?php $_code = $this->getMethodCode() ?>
+<?php $_session = Mage::getSingleton('adminhtml/session_quote') ?>
+<?php $storeId = $_session->getQuote()->getStoreId(); ?>
+
+<ul id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none">
+
+    <ul class="ops_cc_brands_hints">
+        <li>
+            <?php echo $this->__('Please use this method for the following brands only:') . '<br>'; ?>
+            <?php echo implode(', ', $this->getAliasBrands()), '.' ?>
+        </li>
+        <li><?php echo $this->__('Payment using 3D secure is not supported.'); ?></li>
+        <input style="display:none;" name="payment[<?php echo $_code; ?>_data][alias]" value=""
+               id="<?php echo $_code ?>_alias_input">
+    </ul>
+
+    <iframe id="ops_iframe_<?php echo $_code ?>" class="ops_tokenization_frame" style="display: block;"
+            src="about:blank"></iframe>
+    <div id="<?php echo $_code ?>_loader" style="display: none; font-weight: bold;"></div>
+
+    <script type="text/javascript">
+        opsHashUrl = '<?php echo $this->getGenerateHashUrl(null, true); ?>';
+        opsOrderId = '<?php echo $_session->getQuoteId(); ?>';
+        opsPspid = '<?php echo $this->getPSPID($storeId); ?>';
+        opsAcceptUrl = '<?php echo $this->getAliasAcceptUrl(null, true); ?>';
+        opsExceptionUrl = '<?php echo $this->getAliasExceptionUrl(null, true); ?>';
+        opsUrl = '<?php echo $this->getAliasGatewayUrl($storeId); ?>';
+        opsAlias = '';
+
+        paramplus = 'RESPONSEFORMAT=JSON&isAjax=1';
+
+        <?php echo $_code ?> = {
+            'code': '<?php echo $_code ?>',
+            'loader': $('<?php echo $_code ?>_loader'),
+            'tokenizationFrame': $('ops_iframe_<?php echo $_code ?>'),
+            'brandsForAliasInterface': '<?php echo json_encode(
+                $this->getMethod()->getBrandsForAliasInterface()
+            ) ?>'.evalJSON(),
+            'paymentMethod': 'CreditCard',
+            'aliasManager': 'N',
+            'brand': function () {return false}
+        };
+
+        locale = '<?php echo Mage::app()->getLocale()->getLocaleCode(); ?>';
+        transmitPaymentMethod = true;
+
+        Event.observe(document, 'alias:success', function (event) {
+            payment.fillOpsLoader('SUCCESS_TOKEN');
+            $(payment.currentMethodObject.code + '_alias_input').value = event.memo;
+            payment.opsAlias = {
+                "method": payment.currentMethodObject.code,
+                "alias": event.memo
+            };
+            toggleOrderSubmit(true);
+            payment.opsAliasSuccess = true;
+        });
+
+        Event.observe(document, 'alias:failure', function (event) {
+            payment.opsAliasSuccess = false;
+            payment.currentMethodObject.tokenizationFrame.src = 'about:blank';
+            payment.fillOpsLoader();
+            payment.fillOpsLoader('FAILURE_TOKEN');
+        });
+
+        Event.observe(<?php echo $_code ?>.tokenizationFrame, 'load', function () {
+
+            if (<?php echo $_code ?>.tokenizationFrame.src != 'about:blank'
+                && !payment.opsAliasSuccess
+            ){
+                <?php echo $_code ?>.loader.style.display = 'none';
+                <?php echo $_code ?>.tokenizationFrame.style.display = 'block';
+            }
+        });
+
+        Event.observe(window, 'load', function (event) {
+            if (typeof window[order.paymentMethod] != 'undefined') {
+                payment.currentMethodObject = window[order.paymentMethod];
+                if (!payment.opsAliasSuccess && payment.currentMethodObject.tokenizationFrame.src == 'about:blank') {
+                    payment.reloadIframe();
+                } else {
+                    toggleOrderSubmit(true);
+                    payment.fillOpsLoader('SUCCESS_TOKEN');
+                }
+            } else {
+                delete payment.currentMethodObject;
+            }
+        });
+
+        order.setPaymentMethod = order.setPaymentMethod.wrap(function (originalMethod, method) {
+
+            payment.opsAdminSwitchMethod(method);
+            originalMethod(method);
+        });
+
+        // on reload we have to hide the iframe and show a success token if save was successfull already
+
+        if (payment.opsAliasSuccess && typeof payment.currentMethodObject != 'undefined') {
+            payment.fillOpsLoader('SUCCESS_TOKEN');
+        }
+
+        payment.reloadIframe = function () {
+            toggleOrderSubmit(false);
+            payment.currentMethodObject.tokenizationFrame.src = 'about:blank';
+            payment.opsAliasSuccess = false;
+            payment.generateHash();
+        };
+
+        if (typeof payment.prepareOpsForm != 'undefined') {
+            payment.prepareOpsForm = payment.prepareOpsForm.wrap(function (originalMethod, hash) {
+                if (!hash) {
+                    var form = originalMethod(hash);
+                    var formKeyElement = document.createElement('input');
+                    formKeyElement.id = 'form_key';
+                    formKeyElement.name = 'form_key';
+                    formKeyElement.value = '<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>';
+                    form.appendChild(formKeyElement);
+
+                    return form;
+                } else {
+                    return originalMethod(hash);
+                }
+
+            });
+        }
+
+        if (typeof window[order.paymentMethod] != 'undefined') {
+            payment.currentMethodObject = window[order.paymentMethod];
+        }
+
+        if(typeof payment.opsAlias != 'undefined'){
+            if(payment.opsAlias.method == order.paymentMethod){
+                $(payment.opsAlias.method + '_alias_input').value = payment.opsAlias.alias;
+                payment.fillOpsLoader();
+                payment.fillOpsLoader('SUCCESS_TOKEN');
+            }
+        }
+    </script>
+
+</ul>
+

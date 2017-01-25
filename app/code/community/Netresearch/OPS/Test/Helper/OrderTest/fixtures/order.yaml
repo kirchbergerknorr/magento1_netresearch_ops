@@ -1,0 +1,42 @@
+tables:
+  sales/order:
+    - entity_id: 1
+      increment_id: 1000
+      quote_id: 1
+
+    - entity_id: 2
+      increment_id: 2000
+      quote_id: 2
+
+    - entity_id: 3
+      quote_id: 3
+
+    - id: 4
+      entity_id: 4
+      increment_id: 4000
+      quote_id: 5
+
+    - id: 5
+      entity_id: 5
+      increment_id: 1001
+      quote_id: 5
+
+
+  sales/quote:
+    - id: 1
+      entity_id: 1
+      parent_id: 1
+
+    - id: 5
+      entity_id: 5
+      parent_id: 1
+
+  sales/order_payment:
+    - parent_id: 4
+      method: 'ops_test'
+
+    - parent_id: 2
+      method: 'ops_test'
+
+    - parent_id: 5
+      method: 'ops_test'

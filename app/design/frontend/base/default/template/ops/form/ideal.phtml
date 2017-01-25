@@ -1,0 +1,37 @@
+<?php
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+/** @var $this Netresearch_OPS_Block_Form_Ideal */
+$code = $this->getMethodCode();
+$issuers = $this->getIssuers();
+?>
+<ul class="form-list ops-form-list" id="payment_form_ops_iDeal" style="display:none;">
+    <li>
+        <select name="payment[iDeal_issuer_id]" id="ops_iDeal_issuer_id" class="required-entry">
+            <option value=""><?php echo $this->__('--Please Select--') ?></option>
+            <?php foreach ($issuers as $key => $value): ?>
+                <option value=<?php echo $this->escapeHtml($key) ?>>
+                    <?php echo $this->escapeHtml($value) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </li>
+    <p><?php echo $this->getRedirectMessage(); ?></p>
+</ul>

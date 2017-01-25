@@ -1,0 +1,128 @@
+<?php
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+
+/** @var Netresearch_OPS_Block_Placeform $this */
+?>
+
+<form accept-charset="UTF-8"
+      name="ops" id="ops_review_form"
+      action="<?php echo $this->getFormAction(); ?>"
+      enctype="application/x-www-form-urlencoded"
+      method="post"
+      target="<?php echo $this->isIframeTarget() ? 'ops_placeform_iframe' : '_top'; ?>"
+>
+    <?php $formData = $this->getFormData(); ?>
+    <?php if ($this->hasMissingParams()): ?>
+    <div id="messages_product_view">
+        <ul class="messages">
+            <li class="note-msg">
+                <ul>
+                    <li><?php echo $this->getQuestion(); ?></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="fieldset">
+        <h2 class="legend"><?php echo Mage::helper('ops')->__('Your details') ?></h2>
+        <ul class="form-list">
+            <?php else: ?>
+                <p id="loading_notice">
+                    <strong>
+                        <?php
+                        if ($this->isIframeTarget()) {
+                            echo Mage::helper('ops')->__('Please wait a moment while the Ingenico ePayments payment page is loading.');
+                        } else {
+                            echo Mage::helper('ops')->__('Please wait a moment. This page will transfer your data to Ingenico ePayments payment gateway in a few seconds.');
+                        }
+
+                        ?>
+                    </strong>
+                </p>
+            <?php endif; ?>
+
+            <?php if (is_array($formData)): ?>
+                <fieldset>
+                    <?php foreach ($formData as $name => $value) { ?>
+                        <?php if ($this->hasMissingParams() && in_array($name, $this->getQuestionedFormFields())): ?>
+                            <?php if ($name !== 'CIVILITY' && $name !== 'ECOM_SHIPTO_POSTAL_NAME_PREFIX') : ?>
+                                <label class="required"
+                                       for="<?php echo($name); ?>"><?php echo Mage::helper('ops')->__($name) ?>
+                                    <em>*</em></label>
+                                <div class="input-box"><input class="required-entry" id="<?php echo($name); ?>"
+                                                              name="<?php echo($name); ?>"
+                                                              value="<?php echo htmlentities($value, ENT_COMPAT, 'UTF-8', true); ?>"/>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (($name === 'CIVILITY' || $name == 'ECOM_SHIPTO_POSTAL_NAME_PREFIX')): ?>
+                                <label class="required"
+                                       for="<?php echo($name); ?>"><?php echo Mage::helper('ops')->__($name) ?>
+                                    <em>*</em></label>
+                                <div class="input-box">
+                                    <select class="required-entry" id="prefix" name="<?php echo($name); ?>">
+                                        <option <?php if ($value == 'Mr'): echo 'selected'; endif; ?> value='Mr'>Mr
+                                        </option>
+                                        <option <?php if ($value == 'Mrs'): echo 'selected'; endif; ?> value='Mrs'>Mrs
+                                        </option>
+                                    </select>
+                                </div>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <div>
+                                <input type="hidden" name="<?php echo($name); ?>"
+                                       value="<?php echo htmlentities($value, ENT_COMPAT, 'UTF-8'); ?>"/>
+
+                            </div>
+                        <?php endif; ?>
+                    <?php } ?>
+                </fieldset>
+            <?php endif; ?>
+            <?php if ($this->hasMissingParams()): ?>
+        </ul>
+    </div>
+    <div class="buttons-set">
+        <p class="required"><?php echo Mage::helper('contacts')->__('* Required Fields') ?></p>
+        <button class="button" title="OK" type="submit">
+            <span><span>OK</span></span>
+        </button>
+    </div>
+<?php endif; ?>
+</form>
+<?php if ($this->isIframeTarget()): ?>
+    <iframe id="ops_placeform_iframe" name="ops_placeform_iframe" src="" style="display: none; width: 100%;"></iframe>
+<?php endif; ?>
+<script type="text/javascript">
+    //<![CDATA[
+    var review = new VarienForm('ops_review_form', '');
+    <?php if (false == $this->hasMissingParams()): ?>
+    Event.observe(window, 'load', function() {
+        review.submit();
+    });
+    <?php endif; ?>
+
+    <?php if($this->isIframeTarget()): ?>
+    Event.observe('ops_placeform_iframe', 'load', function() {
+        $('ops_placeform_iframe').style.display = 'block';
+        $('ops_placeform_iframe').style.width = 0.9 * window.innerWidth;
+        $('loading_notice').style.display = 'none';
+    });
+    <?php endif; ?>
+    //]]>
+</script>

@@ -1,0 +1,84 @@
+<?php
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+ * flex.phtml
+ *
+ * @category Payment
+ * @package  Netresearch_OPS
+ * @author   Paul Siedler <paul.siedler@netresearch.de>
+ */
+
+/** @var Netresearch_OPS_Block_Info_Flex $this */
+?>
+<p><?php echo $this->escapeHtml($this->getMethod()->getTitle()) ?> - <?php echo $this->escapeHtml($this->getFlexTitle()); ?></p>
+<?php echo Mage::helper('payment')->__('Payment ID: %s', $this->escapeHtml($this->getInfo()->getAdditionalInformation('paymentId'))) ?><br/>
+<?php echo Mage::helper('payment')->__('Status: %s', Mage::helper('ops')->getStatusText($this->getInfo()->getAdditionalInformation('status'))) ?><br/>
+<?php if ($this->getInfo()->hasAdditionalInformation('acceptance')): ?>
+    <?php echo Mage::helper('payment')->__('Acceptance: %s', $this->getInfo()->getAdditionalInformation('acceptance')) ?><br/>
+<?php endif; ?>
+<?php $scoring = $this->getInfo()->getAdditionalInformation('scoring'); ?>
+<?php $scoringCategory = $this->getInfo()->getAdditionalInformation('scoringCategory');
+$scoringCssClass = '';
+if (0 < strlen(trim($scoringCategory))):
+    $scoringCssClass = 'scoring-' . $scoringCategory;
+endif; ?>
+<?php $scoringInformation = $this->getInfo()->getAdditionalInformation('additionalScoringData'); ?>
+<?php if ($scoringInformation): ?>
+    <table class="scoring <?php echo $this->htmlEscape($scoringCssClass); ?>">
+        <tr>
+            <th colspan="3" class="scoring scoring-<?php echo $this->htmlEscape($scoringCategory); ?>">
+                <?php if (is_numeric($scoring) && 0 <= (int) $scoring): ?>
+                    <?php echo Mage::helper('ops')->__('Scoring Value: %s', $this->htmlEscape($scoring)) ?><br />
+                <?php endif; ?>
+                <?php if (0 < strlen(trim($scoringCategory))): ?>
+                    <?php echo Mage::helper('ops')->__(sprintf('Scoring Category: %s', $this->htmlEscape($scoringCategory))) ?>
+                <?php endif; ?>
+            </th>
+        </tr>
+        <?php if (true === is_array($scoringInformation)): ?>
+            <?php foreach($scoringInformation as $key => $value): ?>
+                <tr>
+                    <th><?php echo Mage::helper('ops')->__($key); ?></th>
+                    <td><?php echo $value; ?></td>
+                    <td class="ops_scoring_description">
+                        <?php $descriptionTranslationTemplate = 'SCORING_DESCRIPTION_' . $key; ?>
+                        <?php $description = Mage::helper('ops')->__($descriptionTranslationTemplate) ?>
+                        <?php if ($description != $descriptionTranslationTemplate): ?>
+                            <img src="<?php echo $this->getSkinUrl('images/fam_help.gif') ?>" alt="?" />
+                            <div>
+                                <?php echo $description ?>
+                            </div>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </table>
+<?php endif; ?>
+<?php if ('O' == $scoringCategory): ?>
+    <div class="notice-msg" style="padding: 9px 30px; margin-top: 3px">
+        <?php echo Mage::helper('ops')->__('This might be a fraud attempt. Please check details for more information.') ?>
+    </div>
+<?php endif; ?>
+<?php if (!is_numeric($scoring) && 0 < strlen(trim($scoringCategory)) && 0 == sizeof($scoringInformation)): ?>
+    <?php echo Mage::helper('ops')->__('No scoring information available'); ?>
+<?php endif; ?>

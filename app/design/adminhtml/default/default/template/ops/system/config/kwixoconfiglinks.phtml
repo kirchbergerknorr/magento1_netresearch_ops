@@ -1,0 +1,44 @@
+<?php
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+?>
+<span style="margin-right: 5px;">
+<?php echo $this->__(
+    "Don't forget to set your shipping method to use KWIXO in the best way"
+); ?> -
+</span>
+<a target="_blank" href="<?php echo Mage::helper('adminhtml/data')->getUrl(
+    'adminhtml/kwixoshipping'
+); ?>">
+    <?php echo $this->__('Kwixo shipping setting'); ?>
+</a>
+
+<br/>
+
+<a target="_blank" href="<?php echo Mage::helper('adminhtml/data')->getUrl(
+    'adminhtml/kwixocategory'
+); ?>">
+    <?php echo $this->__('Kwixo Category Mapping'); ?>
+</a>
+<span style="margin-left: 5px;">
+    <?php echo $this->__(
+        'Please note that a proper category mapping is necessary in order to use this payment method'
+    ); ?>.
+</span>

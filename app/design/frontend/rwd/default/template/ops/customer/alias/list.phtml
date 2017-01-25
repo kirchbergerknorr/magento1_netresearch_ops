@@ -1,0 +1,80 @@
+<?php
+/**
+ * @category   OPS
+ * @package    Netresearch_OPS
+ * @author     Thomas Birke <thomas.birke@netresearch.de>
+ * @author     Michael Lühr <michael.luehr@netresearch.de>
+ * @copyright  Copyright (c) 2012 Netresearch GmbH & Co. KG
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Netresearch_OPS_CustomerController
+ *
+ * @author     Thomas Birke <thomas.birke@netresearch.de>
+ * @author     Michael Lühr <michael.luehr@netresearch.de>
+ * @copyright  Copyright (c) 2012 Netresearch GmbH & Co. KG
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * @var $this Netresearch_OPS_Block_Alias_List
+ */
+?>
+<?php $aliases = $this->getAliases(); ?>
+<div class="page-title">
+    <h1><?php echo Mage::helper('ops')->__('My payment information') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php echo $this->getChildHtml('pager'); ?>
+<?php if(count($aliases)): ?>
+    <table class="data-table" id="ops-payment-information-table">
+        <thead>
+        <tr>
+            <th><?php echo Mage::helper('ops')->__('Payment method') ?></th>
+            <th><?php echo Mage::helper('ops')->__('Credit Card Type') ?></th>
+            <th><?php echo Mage::helper('ops')->__('Card Number/Account Number') ?></th>
+            <th><?php echo Mage::helper('ops')->__('Expiration Date') ?></th>
+            <th><?php echo Mage::helper('ops')->__('Card Holder') ?></th>
+            <th><?php echo Mage::helper('ops')->__('State') ?></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $_odd = ''; ?>
+        <?php foreach ($aliases as $alias): ?>
+            <?php $deleteUrl = $this->getAliasDeleteUrl($alias->getId()); ?>
+            <tr>
+                <td data-ops-title="<?php echo Mage::helper('ops')->__('Payment method') ?>">
+                    <?php echo $this->getMethodName($alias->getPaymentMethod()); ?>
+                </td>
+                <td data-ops-title="<?php echo Mage::helper('ops')->__('Credit Card Type') ?>">
+                    <?php echo $this->escapeHtml($alias->getBrand()); ?>
+                </td>
+                <td data-ops-title="<?php echo Mage::helper('ops')->__('Card Number/Account Number') ?>">
+                    <?php echo $this->escapeHtml($alias->getPseudoAccountOrCCNo()); ?>
+                </td>
+                <td data-ops-title="<?php echo Mage::helper('ops')->__('Expiration Date') ?>">
+                    <?php echo $this->escapeHtml($alias->getExpirationDate()); ?>
+                </td>
+                <td data-ops-title="<?php echo Mage::helper('ops')->__('Card Holder') ?>">
+                    <?php echo $this->escapeHtml($alias->getCardHolder()); ?>
+                </td>
+                <td data-ops-title="<?php echo Mage::helper('ops')->__('State') ?>">
+                    <?php echo $this->escapeHtml($this->__($alias->getState())); ?>
+                </td>
+                <td>
+                    <a href="<?php echo $deleteUrl ?>"><?php echo Mage::helper('ops')->__('Delete') ?></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p><?php echo Mage::helper('ops')->__('You did not save any payment information, yet.'); ?></p>
+<?php endif; ?>
+<?php echo $this->getChildHtml('pager'); ?>
+<div class="buttons-set">
+    <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+</div>
+

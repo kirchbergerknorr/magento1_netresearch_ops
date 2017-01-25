@@ -1,0 +1,168 @@
+<?php
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+ * @var Netresearch_OPS_Block_Form_Cc $this
+ */
+$code = $this->getMethodCode();
+?>
+<ul class="form-list ops-form-list ops_card" id="payment_form_<?php echo $code ?>" style="display:none;">
+
+    <?php
+    $display = 'none';
+    $storedAliases = $this->getStoredAliasForCustomer();
+    ?>
+
+    <fieldset>
+        <?php foreach ($storedAliases as $key => $alias): ?>
+            <?php $brandName = $this->getStoredAliasBrand($alias->getId()) ?>
+            <input type="radio" id="<?php echo $alias->getId() ?>" name="payment[<?php echo $code ?>_data][alias]"
+                   value="<?php echo $alias->getAlias() ?>"
+                   data-brand="<?php echo $brandName ?>"
+                   data-cn="<?php echo $this->getCardHolderName($alias->getId()) ?>"
+                   required/>
+            <label for="<?php echo $alias->getId() ?>">
+                <ul>
+                    <li><?php echo $this->__('Name on Card') . ': ' . $this->getCardHolderName($alias->getId()) ?></li>
+                    <li>
+                        <?php echo $this->__('Credit Card Number') . ': '
+                            . $this->getAliasCardNumber($alias->getId());
+                        ?>
+                    </li>
+                    <li>
+                        <?php echo $this->__('Credit Card Type:') ?>
+                        <img src="<?php echo $this->getImageForBrand($brandName) ?>" alt="<?php echo $brandName ?>"
+                             class="ops-brandlogo">
+                    </li>
+                    <li><?php echo $this->__('Expiration Date') . ': '
+                            . $this->getExpirationDatePart($alias->getId(), 'complete');
+                        ?>
+                    </li>
+
+                    <?php if ($this->checkIfBrandHasAliasInterfaceSupport($alias->getId())): ?>
+                        <li class="cvc" style="display: none;">
+                            <label class="required" for="<?php echo strtoupper($code) ?>_CVC_<?php echo $alias->getId(
+                            ) ?>"><?php echo $this->__('Card Verification Number'); ?><em>*</em></label>
+                            <input title="<?php echo $this->__('Card Verification Number'); ?>"
+                                   class="input-text required-entry"
+                                   type="text" name="payment[<?php echo $code ?>_data][cvc]"
+                                   id="<?php echo strtoupper($code) ?>_CVC_<?php echo $alias->getId() ?>" length="6"/>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </label>
+        <?php endforeach; ?>
+        <?php if (!empty($storedAliases)): ?>
+            <input type="select" id="<?php echo $code; ?>_stored_alias_brand"
+                   name="payment[<?php echo $code; ?>_data][CC_BRAND]" class="hidden">
+            <?php foreach ($this->getAliasBrands() as $brand) : ?>
+                <option value="<?php echo $brand; ?>" class="hidden">
+                    <?php echo $this->__($brand); ?>
+                </option>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        <input type="radio" id="new_alias_<?php echo $code ?>" name="payment[<?php echo $code ?>_data][alias]"
+               class="validate-one-required-by-name" value="" <?php echo empty($storedAliases)
+            ? 'checked' : ''; ?> required>
+        <label for="new_alias_<?php echo $code ?>" class="new_alias_label">
+            <?php echo $this->__('Enter new credit card data...') ?></label>
+        <li id="insert_payment_details_<?php echo $code ?>" class="insert_payment_details" style="">
+            <label class="required" for="<?php echo strtoupper($code) ?>_BRAND"
+                   id="<?php echo strtoupper($code) ?>_BRAND_LABEL">
+                <?php echo $this->__('Credit Card Type'); ?></label><br/>
+            <select title="<?php echo strtoupper($code) ?>_BRAND" class="required-entry" autocomplete="off"
+                    name="payment[<?php echo $code; ?>_data][CC_BRAND]" id="<?php echo strtoupper($code) ?>_BRAND">
+                <option value=""><?php echo $this->__('--Please select--') ?></option>
+                <?php foreach ($this->getCCBrands() as $brand) : ?>
+                    <option value="<?php echo $brand; ?>">
+                        <?php echo $this->__($brand); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+            <div id="<?php echo $code ?>_loader" class="ops_htp_loader" style="display: none;"></div>
+            <iframe id="ops_iframe_<?php echo $code ?>" class="ops_htp_iframe" style="display: none;"
+                    src="about:blank"></iframe>
+            <p id="<?php echo $code ?>_redirect_note" class="ops_htp_redirect" style="display: none;">
+                <?php echo $this->getRedirectMessage(); ?></p>
+        </li>
+
+        <script type="text/javascript">
+            opsHashUrl = '<?php echo $this->getGenerateHashUrl(); ?>';
+            opsOrderId = '<?php echo $this->getQuote()->getId(); ?>';
+            opsPspid = '<?php echo $this->getPSPID(); ?>';
+            opsAcceptUrl = '<?php echo $this->getAliasAcceptUrl(); ?>';
+            opsExceptionUrl = '<?php echo $this->getAliasExceptionUrl(); ?>';
+            opsUrl = '<?php echo $this->getAliasGatewayUrl(); ?>';
+            opsAlias = '';
+
+
+            paramplus = 'RESPONSEFORMAT=JSON';
+
+            <?php echo $code ?> = {
+                'code': '<?php echo $code ?>',
+                'loader': $('<?php echo $code ?>_loader'),
+                'tokenizationFrame': $('ops_iframe_<?php echo $code ?>'),
+                'redirectNote': $('<?php echo $code ?>_redirect_note'),
+                'brandsForAliasInterface': '<?php echo json_encode(
+                    $this->getMethod()->getBrandsForAliasInterface()
+                ) ?>'.evalJSON(),
+                'aliasManager': <?php echo $this->getConfig()->isAliasManagerEnabled($this->getMethodCode()) ? 'true'
+                : 'false' ?>,
+                'brand': function () {
+                    return $(payment.currentMethodObject.code.toUpperCase() + '_BRAND').value;
+                }
+            };
+            locale = '<?php echo Mage::app()->getLocale()->getLocaleCode(); ?>';
+            transmitPaymentMethod = false;
+
+            Event.observe('<?php echo strtoupper($code); ?>_BRAND', 'change', function () {
+                payment.handleBrandChange();
+            });
+
+            Event.observe(<?php echo $code; ?>.tokenizationFrame, 'load', function () {
+                if (typeof payment.onOpsIframeLoad == 'function') {
+                    payment.onOpsIframeLoad();
+                }
+            });
+
+            Event.observe(document, 'alias:success', function (event) {
+                payment.fillOpsLoader('SUCCESS_TOKEN_FRONTEND');
+                if (typeof checkout != 'undefined' && checkout) {
+                    payment.toggleContinue(true);
+                }
+                payment.opsAliasSuccess = true;
+                $('new_alias_' + payment.currentMethod).value = event.memo;
+                payment.save();
+            });
+
+            Event.observe(document, 'alias:failure', function (event) {
+                payment.opsAliasSuccess = false;
+                payment.currentMethodObject.tokenizationFrame.src = 'about:blank';
+                payment.fillOpsLoader('FAILURE_TOKEN_FRONTEND');
+                if (typeof checkout != 'undefined' && checkout) {
+                    payment.toggleContinue(false);
+                }
+            });
+
+        </script>
+    </fieldset>
+</ul>

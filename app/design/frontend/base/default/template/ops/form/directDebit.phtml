@@ -1,0 +1,145 @@
+<?php
+/**
+ * Netresearch_OPS
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to
+ * newer versions in the future.
+ *
+ * @copyright Copyright (c) 2016 Netresearch GmbH & Co. KG (http://www.netresearch.de/)
+ * @license   Open Software License (OSL 3.0)
+ * @link      http://opensource.org/licenses/osl-3.0.php
+ */
+/**
+ * Netresearch_OPS_Block_Form_DirectDebit
+ *
+ * @category  design
+ * @package   OPS
+ * @copyright 2012 Netresearch App Factory AG <http://www.netresearch.de>
+ * @author    Thomas Birke <thomas.birke@netresearch.de>
+ * @license   OSL 3.0
+ */
+
+/** @var  Netresearch_OPS_Block_Form_DirectDebit $this */
+$code = $this->getMethodCode();
+$display = 'none';
+$storedAliases = $this->getStoredAliasForCustomer();
+?>
+
+<ul class="form-list ops-form-list ops_card" id="payment_form_<?php echo $code ?>" style="display:none;">
+<fieldset>
+    <?php foreach ($storedAliases as $key => $alias): ?>
+        <?php $brandName = $alias->getBrand() ?>
+        <input type="radio" id="<?php echo $alias->getId() ?>" name="payment[<?php echo $code ?>_data][alias]"
+               value="<?php echo $alias->getAlias() ?>"
+               data-countryid="<?php echo str_replace('Direct Debits ','', $brandName) ?>"
+               data-cn="<?php echo $this->getCardHolderName($alias->getId()) ?>"
+               required/>
+        <label for="<?php echo $alias->getId() ?>">
+            <ul>
+                <li><?php echo $this->__('Name on Card') . ': ' . $this->getCardHolderName($alias->getId()) ?></li>
+                <li>
+                    <?php echo $this->__('IBAN') . ': '
+                        . $this->getAliasCardNumber($alias->getId());
+                    ?>
+                </li>
+            </ul>
+        </label>
+    <?php endforeach; ?>
+    <?php if (!empty($storedAliases)): ?>
+        <input type="select" id="<?php echo $code; ?>_stored_country_id"
+               name="payment[<?php echo $code; ?>_data][country_id]" class="hidden">
+        <?php foreach ($this->getDirectDebitCountryIds() as $countryId) : ?>
+            <option value="<?php echo $countryId; ?>" class="hidden">
+                <?php echo $this->__($countryId); ?>
+            </option>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <input type="radio" id="new_alias_<?php echo $code ?>" name="payment[<?php echo $code ?>_data][alias]"
+           class="validate-one-required-by-name" value="" <?php echo empty($storedAliases)
+        ? 'checked' : ''; ?> required>
+    <label for="new_alias_<?php echo $code ?>" class="new_alias_label">
+        <?php echo $this->__('Enter new bank data...') ?></label>
+    <!--    new  Alias -->
+    <li id="insert_payment_details_<?php echo $code ?>" class="insert_payment_details" style="">
+        <label class="required" for="ops_directdebit_country_id"><?php echo $this->__('Country'); ?></label><br/>
+        <select class="required-entry" name="payment[<?php echo $code ?>_data][country_id]"
+                id="<?php echo $code ?>_country_id">
+            <option value=""><?php echo $this->__('--Please Select--') ?></option>
+            <?php foreach ($this->getDirectDebitCountryIds() as $countryId) : ?>
+                <option value="<?php echo $countryId; ?>">
+                    <?php echo Mage::getModel('directory/country')->loadByCode($countryId)->getName(); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
+        <div id="<?php echo $code ?>_loader" class="ops_htp_loader" style="display: none;"></div>
+        <iframe id="ops_iframe_<?php echo $code ?>" class="ops_htp_iframe" style="display: none;"
+                src="about:blank"></iframe>
+    </li>
+
+
+    <script type="text/javascript">
+        opsHashUrl = '<?php echo $this->getGenerateHashUrl(); ?>';
+        opsOrderId = '<?php echo $this->getQuote()->getId(); ?>';
+        opsPspid = '<?php echo $this->getPSPID(); ?>';
+        opsAcceptUrl = '<?php echo $this->getAliasAcceptUrl(); ?>';
+        opsExceptionUrl = '<?php echo $this->getAliasExceptionUrl(); ?>';
+        opsUrl = '<?php echo $this->getAliasGatewayUrl(); ?>';
+        opsAlias = '';
+
+        paramplus = 'RESPONSEFORMAT=JSON';
+
+        <?php echo $code ?> = {
+            'code': '<?php echo $code ?>',
+            'loader': $('<?php echo $code ?>_loader'),
+            'tokenizationFrame': $('ops_iframe_<?php echo $code ?>'),
+            'aliasManager': <?php echo $this->getConfig()->isAliasManagerEnabled($this->getMethodCode()) ? 'true'
+            : 'false' ?>,
+            'brand': function(){ return 'Direct Debits '+ $("<?php echo $code ?>_country_id").value;}
+        };
+        locale = '<?php echo Mage::app()->getLocale()->getLocaleCode(); ?>';
+        transmitPaymentMethod = false;
+
+        Event.observe('<?php echo $code; ?>_country_id', 'change', function () {
+            payment.handleBrandChange();
+        });
+
+        Event.observe(<?php echo $code; ?>.tokenizationFrame, 'load', function () {
+            if (typeof payment.onOpsIframeLoad == 'function') {
+                payment.onOpsIframeLoad();
+            }
+        });
+
+        Event.observe(document, 'alias:success', function (event) {
+            payment.fillOpsLoader('SUCCESS_TOKEN');
+            if (typeof checkout != 'undefined' && checkout) {
+                payment.toggleContinue(true);
+            }
+            payment.opsAliasSuccess = true;
+            $('new_alias_' + payment.currentMethod).value = event.memo;
+            payment.save();
+        });
+
+        Event.observe(document, 'alias:failure', function (event) {
+            payment.opsAliasSuccess = false;
+            payment.currentMethodObject.tokenizationFrame.src = 'about:blank';
+            payment.fillOpsLoader('FAILURE_TOKEN');
+            if (typeof checkout != 'undefined' && checkout) {
+                payment.toggleContinue(false);
+            }
+        });
+    </script>
+ </fieldset>
+</ul>
+
+

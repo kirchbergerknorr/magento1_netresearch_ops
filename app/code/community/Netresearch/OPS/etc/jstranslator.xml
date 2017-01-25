@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jstranslator>
+    <ops-payment-failed-switch-method translate="message" module="ops">
+        <message>Payment failed. Please select another payment method.</message>
+    </ops-payment-failed-switch-method>
+    <ops-payment-failed-review-input translate="message" module="ops">
+        <message>Payment failed. Please review your input or select another payment method.</message>
+    </ops-payment-failed-review-input>
+    <ops-htp-load-token translate="message" module="ops">
+        <message>LOAD_TOKEN</message>
+    </ops-htp-load-token>
+    <ops-htp-success-token translate="message" module="ops">
+        <message>SUCCESS_TOKEN</message>
+    </ops-htp-success-token>
+    <ops-htp-success-token-frontend translate="message" module="ops">
+        <message>SUCCESS_TOKEN_FRONTEND</message>
+    </ops-htp-success-token-frontend>
+    <ops-htp-failure-token translate="message" module="ops">
+        <message>FAILURE_TOKEN</message>
+    </ops-htp-failure-token>
+    <ops-htp-failure-token-frontend translate="message" module="ops">
+        <message>FAILURE_TOKEN_FRONTEND</message>
+    </ops-htp-failure-token-frontend>
+    <ops-required-field translate="message" module="ops">
+        <message>This is a required field.</message>
+    </ops-required-field>
+</jstranslator>
