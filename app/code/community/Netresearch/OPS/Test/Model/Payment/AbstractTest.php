@@ -1,5 +1,5 @@
 <?php
-class Netresearch_OPS_Test_Model_Payment_AbstractTest extends EcomDev_PHPUnit_Test_Case_Controller
+class Netresearch_OPS_Test_Model_Payment_AbstractTest extends EcomDev_PHPUnit_Test_Case
 {
     protected $model = null;
 
@@ -62,9 +62,15 @@ class Netresearch_OPS_Test_Model_Payment_AbstractTest extends EcomDev_PHPUnit_Te
             ->method('getAllItems')
             ->will($this->returnValue($items));
 
-        $result = Mage::getModel('ops/payment_abstract')->_getOrderDescription($order);
+        $result = Mage::getModel('ops/payment_abstract')->setEncoding('utf-8')->_getOrderDescription($order);
         $this->assertEquals(
             'abc, ghi, Dubbelwerkende cilinder Boring ø70 Stang ø40 3/8, 0123456789012345678901234567890123456789',
+            $result
+        );
+
+        $result = Mage::getModel('ops/payment_abstract')->setEncoding('foobar')->_getOrderDescription($order);
+        $this->assertEquals(
+            'abc, ghi, Dubbelwerkende cilinder Boring oe70 Stang oe40 3/8, 01234567890123456789012345678901234567',
             $result
         );
     }
@@ -248,14 +254,18 @@ class Netresearch_OPS_Test_Model_Payment_AbstractTest extends EcomDev_PHPUnit_Te
     public function testGetMethodDependendFormFields()
     {
         $order = Mage::getModel('sales/order')->load(11);
-        $sessionMock = $this->getModelMock('checkout/session', array('getQuote'));
+        $sessionMock = $this->getModelMockBuilder('checkout/session')
+            ->setMethods(array('getQuote'))
+            ->disableOriginalConstructor();
         $sessionMock->expects($this->any())
             ->method('getQuote')
             ->will($this->returnValue($order));
         $this->replaceByMock('model', 'checkout/session', $sessionMock);
 
 
-        $sessionMock = $this->getModelMock('customer/session', array('isLoggedIn'));
+        $sessionMock = $this->getModelMockBuilder('customer/session')
+            ->setMethods(array('isLoggedIn'))
+            ->disableOriginalConstructor();
         $sessionMock->expects($this->any())
             ->method('isLoggedIn')
             ->will($this->returnValue(1));
@@ -602,9 +612,16 @@ class Netresearch_OPS_Test_Model_Payment_AbstractTest extends EcomDev_PHPUnit_Te
             ->will($this->returnValue(false));
         $this->replaceByMock('helper', 'ops/directlink', $helperMock);
 
+        $statusMock = $this->getModelMock('ops/status_update', array('updateStatusFor'));
+        $statusMock->expects($this->once())
+            ->method('updateStatusFor')
+            ->will($this->returnSelf());
+        $this->replaceByMock('model', 'ops/status_update', $statusMock);
+
         $apiClientMock = $this->getModelMock(
             'ops/api_directlink', array('performRequest')
         );
+
         $apiClientMock->expects($this->any())
             ->method('performRequest')
             ->will(

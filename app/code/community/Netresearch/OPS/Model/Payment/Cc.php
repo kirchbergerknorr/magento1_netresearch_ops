@@ -276,24 +276,25 @@ class Netresearch_OPS_Model_Payment_Cc extends Netresearch_OPS_Model_Payment_Dir
             $formFields['CREDITDEBIT'] = "C";
         }
 
-        $alias = $order->getPayment()->getAdditionalInformation('alias');
+        $alias = $order->getPayment()->getAdditionalInformation('alias') ?: '';
+        $formFields['ALIAS'] = $alias;
 
-        if ($alias) {
-            $formFields['ALIAS'] = $alias;
-            $formFields['ALIASOPERATION'] = "BYPSP";
-            $formFields['ECI'] = 9;
-            $formFields['ALIASUSAGE'] = $this->getConfig()->getAliasUsageForExistingAlias(
-                $order->getPayment()->getMethodInstance()->getCode(),
-                $order->getStoreId()
-            );
-        } else {
-            $formFields['ALIAS'] = "";
-            $formFields['ALIASOPERATION'] = "BYPSP";
-            $formFields['ALIASUSAGE'] = $this->getConfig()->getAliasUsageForNewAlias(
-                $order->getPayment()->getMethodInstance()->getCode(),
-                $order->getStoreId()
-            );
+        if ($this->getConfigData('active_alias')) {
+            if ($alias) {
+                $formFields['ALIASOPERATION'] = "BYPSP";
+                $formFields['ECI'] = 9;
+                $formFields['ALIASUSAGE'] = $this->getConfig()->getAliasUsageForExistingAlias(
+                    $order->getPayment()->getMethodInstance()->getCode(),
+                    $order->getStoreId()
+                );
+            } else {
+                $formFields['ALIASOPERATION'] = "BYPSP";
+                $formFields['ALIASUSAGE'] = $this->getConfig()->getAliasUsageForNewAlias(
+                    $order->getPayment()->getMethodInstance()->getCode(),
+                    $order->getStoreId()
+                );
 
+            }
         }
 
         return $formFields;

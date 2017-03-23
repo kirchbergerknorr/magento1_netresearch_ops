@@ -128,10 +128,14 @@ class Netresearch_OPS_Model_Payment_Abstract extends Mage_Payment_Model_Method_A
 
     /**
      * @param string $encoding
+     *
+     * @return $this
      */
     public function setEncoding($encoding)
     {
         $this->encoding = $encoding;
+
+        return $this;
     }
 
     /**
@@ -496,9 +500,13 @@ class Netresearch_OPS_Model_Payment_Abstract extends Mage_Payment_Model_Method_A
                 if (!$item->getParentItem()) {
                     $acc .= ($acc != '' ? ', ' : '') . $item->getName();
                 }
+
                 return $acc;
             }, ''
         );
+
+        list($description) = $this->transliterateParams(array($description));
+        $description = mb_substr($description, 0, 100);
 
         return $description;
     }
@@ -843,7 +851,7 @@ class Netresearch_OPS_Model_Payment_Abstract extends Mage_Payment_Model_Method_A
                 );
             }
 
-
+            /** @var Netresearch_OPS_Model_Response_Handler $handler */
             $handler = Mage::getModel('ops/response_handler');
             $handler->processResponse($response, $this, false);
 
