@@ -28,7 +28,7 @@
 <config>
     <modules>
         <Netresearch_OPS>
-            <version>16.12.14</version>
+            <version>16.12.14+174</version>
         </Netresearch_OPS>
     </modules>
     <global>

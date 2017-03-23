@@ -39,7 +39,7 @@ class Netresearch_OPS_Model_Payment_BankTransfer
         }
         $pm = $brand = trim('Bank transfer' . (('*' == $countryId) ? '' : ' ' . $countryId));
 
-        $payment = Mage::getSingleton('checkout/session')->getQuote()->getPayment();
+        $payment = $this->getInfoInstance();
         $payment->setAdditionalInformation('PM', $pm);
         $payment->setAdditionalInformation('BRAND', $brand);
 

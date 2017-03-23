@@ -209,5 +209,81 @@ class Netresearch_OPS_Test_Model_Payment_CcTest extends EcomDev_PHPUnit_Test_Cas
         $quote->setItemsCount(500);
         $this->assertFalse($this->_model->isAvailable($quote));
     }
+
+    /**
+     * @loadFixture ../../../../var/fixtures/orders.yaml
+     */
+    public function testGetMethodDependendFormFields()
+    {
+        $order = Mage::getModel('sales/order')->load(11);
+
+        $sessionMock = $this->getModelMockBuilder('core/session')
+            ->disableOriginalConstructor()
+            ->setMethods(null)
+            ->getMock();
+        $this->replaceByMock('singleton', 'core/session', $sessionMock);
+
+        $sessionMock = $this->getModelMockBuilder('customer/session')
+            ->disableOriginalConstructor()
+            ->setMethods(null)
+            ->getMock();
+        $this->replaceByMock('singleton', 'customer/session', $sessionMock);
+
+        $configMock = $this->getModelMock('ops/config',
+            array(
+                'getCreditDebitSplit',
+                'getAliasUsageForExistingAlias',
+                'getAliasUsageForNewAlias'
+            )
+        );
+
+        $configMock
+            ->expects($this->any())
+            ->method('getCreditDebitSplit')
+            ->will($this->returnValue(true));
+
+        $configMock
+            ->expects($this->any())
+            ->method('getAliasUsageForExistingAlias')
+            ->will($this->returnValue('foo'));
+
+        $configMock
+            ->expects($this->any())
+            ->method('getAliasUsageForNewAlias')
+            ->will($this->returnValue('bar'));
+
+        $this->replaceByMock('model', 'ops/config', $configMock);
+
+        $ccModelMock = $this->getModelMock('ops/payment_cc', array('getConfigData'));
+        $ccModelMock
+            ->expects($this->any())
+            ->method('getConfigData')
+            ->will($this->returnValue(true));
+
+        $this->replaceByMock('model', 'ops/payment_cc', $ccModelMock);
+
+
+        $formFields = $ccModelMock->getMethodDependendFormFields($order, null);
+        $this->assertEquals('041907169941', $formFields['ALIAS']);
+        $this->assertEquals('BYPSP', $formFields['ALIASOPERATION']);
+        $this->assertEquals('9', $formFields['ECI']);
+        $this->assertEquals('foo', $formFields['ALIASUSAGE']);
+
+        $order = Mage::getModel('sales/order')->load(32);
+
+        $ccModelMock
+            ->expects($this->any())
+            ->method('getConfigData')
+            ->will($this->returnValue(false));
+
+        $this->replaceByMock('model', 'ops/payment_cc', $ccModelMock);
+
+        $formFields = $ccModelMock->getMethodDependendFormFields($order, null);
+        $this->assertEquals('', $formFields['ALIAS']);
+        $this->assertEquals('BYPSP', $formFields['ALIASOPERATION']);
+        $this->assertEquals('bar', $formFields['ALIASUSAGE']);
+
+    }
+
 }
 
