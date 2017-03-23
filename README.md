@@ -2,9 +2,9 @@
 
 **Extension for Magento 1**
 
-Tested for Magento 1.9.3.1
+Tested for Magento 1.9.3.2
 
-Module version 16.12.14
+Module version 16.12.14+174
 
 ---
 
@@ -39,7 +39,7 @@ Add the `require` and `repositories` sections to your composer.json as shown bel
         
         ...
         
-        "kirchbergerknorr/magento1_netresearch_ops": "^16.12.14",
+        "kirchbergerknorr/magento1_netresearch_ops": "^16.12.14.174",
         
         ...
     },
